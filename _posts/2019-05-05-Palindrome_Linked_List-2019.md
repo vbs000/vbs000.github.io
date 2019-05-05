@@ -4,7 +4,7 @@ title:      Palindrome               # 标题
 subtitle:   Linked List #副标题
 date:       2019-05-05              # 时间
 author:     NXY                      # 作者
-header-img: img/post-bg-2015.jpg    #这篇文章标题背景图片
+header-img: img/post-bg-debug.png    #这篇文章标题背景图片
 catalog: true                       # 是否归档
 tags:                               #标签
     - Coding
