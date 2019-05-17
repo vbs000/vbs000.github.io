@@ -9,7 +9,6 @@ catalog: true                       # 是否归档
 tags:                               #标签
     - Coding
 ---
-# [Test Palindrome Linked List][title]
 
 ## 描述
 
