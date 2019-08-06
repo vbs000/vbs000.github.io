@@ -18,7 +18,7 @@ tags:                               #标签
 
 ## 所有的开始
 
-1.GitHub映射了以这样（${username}.github.io）方式命名的仓库（Repository）。
+1.GitHub映射了以这样（${username}.github.io）方式命名的仓库（Repository）。  
 2.而且，在该仓库的根目录默认以index.html作为首页。
 
 ## 什么是jekyll
