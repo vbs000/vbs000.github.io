@@ -1,0 +1,180 @@
+I"F<h2 id="描述">描述</h2>
+
+<p>测试编写线性递归和尾递归。</p>
+
+<p><strong>疑问:</strong></p>
+
+<ul>
+  <li>是否所有的递归都可以转换为尾递归?</li>
+  <li>尾递归是否一定可以转换为循环，如果是，那么是否一定比循环优雅？</li>
+</ul>
+
+<h2 id="思路">思路</h2>
+
+<p>找到递归的重复动作和递归的出口。</p>
+
+<h2 id="完整代码src">[完整代码][src]</h2>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">package</span> <span class="n">org</span><span class="o">.</span><span class="na">vbs000</span><span class="o">.</span><span class="na">practice</span><span class="o">.</span><span class="na">p0</span><span class="o">;</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">RecursionLearning</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="nc">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+        <span class="c1">//***1.阶乘的递归计算</span>
+        <span class="k">try</span> <span class="o">{</span>
+            <span class="kt">long</span> <span class="n">factorialResult</span> <span class="o">=</span> <span class="n">factorial</span><span class="o">(</span><span class="mi">6</span><span class="o">);</span>
+            <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"*factorial(6):"</span><span class="o">+</span><span class="n">factorialResult</span><span class="o">);</span>
+        <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="nc">Exception</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+            <span class="n">e</span><span class="o">.</span><span class="na">printStackTrace</span><span class="o">();</span>
+        <span class="o">}</span>
+        <span class="c1">//***2.递归打印的简单理解</span>
+        <span class="n">recursion_display</span><span class="o">(</span><span class="mi">6</span><span class="o">);</span>
+
+        <span class="c1">//***3.斐波那契数列的计算</span>
+        <span class="c1">//(1)线性递归的方式</span>
+        <span class="k">try</span> <span class="o">{</span>
+            <span class="kt">int</span> <span class="n">fibResult</span> <span class="o">=</span> <span class="n">fib</span><span class="o">(</span><span class="mi">6</span><span class="o">);</span>
+            <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"*fib(6):"</span><span class="o">+</span><span class="n">fibResult</span><span class="o">);</span>
+        <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="nc">Exception</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+            <span class="n">e</span><span class="o">.</span><span class="na">printStackTrace</span><span class="o">();</span>
+        <span class="o">}</span>
+
+        <span class="c1">//(2)尾递归的方式</span>
+        <span class="kt">int</span> <span class="n">a</span> <span class="o">=</span> <span class="mi">1</span><span class="o">;</span><span class="c1">//第一项</span>
+        <span class="kt">int</span> <span class="n">b</span> <span class="o">=</span><span class="mi">1</span><span class="o">;</span><span class="c1">//第二项</span>
+
+        <span class="kt">int</span> <span class="n">newFibResult</span> <span class="o">=</span> <span class="n">newFib</span><span class="o">(</span><span class="n">a</span><span class="o">,</span><span class="n">b</span><span class="o">,</span><span class="mi">6</span><span class="o">);</span>
+        <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"*newFib(6):"</span><span class="o">+</span><span class="n">newFibResult</span><span class="o">);</span>
+
+        <span class="kt">int</span> <span class="n">newFibResult_fmt2</span> <span class="o">=</span> <span class="n">newFib_fmt2</span><span class="o">(</span><span class="n">a</span><span class="o">,</span><span class="n">b</span><span class="o">,</span><span class="mi">6</span><span class="o">);</span>
+        <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"*newFib_fmt2(6):"</span><span class="o">+</span><span class="n">newFibResult_fmt2</span><span class="o">);</span>
+
+        <span class="kt">int</span> <span class="n">newFibResult_fmt3</span> <span class="o">=</span> <span class="n">newFib_fmt3</span><span class="o">(</span><span class="mi">6</span><span class="o">,</span><span class="n">a</span><span class="o">,</span><span class="n">b</span><span class="o">);</span>
+        <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"*newFib_fmt3(6):"</span><span class="o">+</span><span class="n">newFibResult_fmt3</span><span class="o">);</span>
+
+        <span class="c1">//(3)循环的方式</span>
+        <span class="c1">//此时已经给出了两项</span>
+        <span class="k">try</span> <span class="o">{</span>
+            <span class="kt">int</span> <span class="n">newFibResult_repeat</span> <span class="o">=</span><span class="n">newFib_repeat</span><span class="o">(</span><span class="mi">6</span><span class="o">);</span>
+            <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"*newFib_repeat(6):"</span><span class="o">+</span><span class="n">newFibResult_repeat</span><span class="o">);</span>
+        <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="nc">Exception</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+            <span class="n">e</span><span class="o">.</span><span class="na">printStackTrace</span><span class="o">();</span>
+        <span class="o">}</span>
+
+    <span class="o">}</span>
+
+    <span class="cm">/**
+     * 阶乘
+     * @param n 阶乘参数
+     * @return 阶乘结果
+     * @throws Exception
+     */</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">long</span> <span class="nf">factorial</span><span class="o">(</span><span class="kt">int</span> <span class="n">n</span><span class="o">)</span> <span class="kd">throws</span> <span class="nc">Exception</span><span class="o">{</span>
+        <span class="k">if</span><span class="o">(</span><span class="n">n</span><span class="o">&lt;</span><span class="mi">0</span><span class="o">){</span>
+            <span class="k">throw</span> <span class="k">new</span> <span class="nf">Exception</span><span class="o">(</span><span class="s">"参数不能为负!"</span><span class="o">);</span>
+        <span class="o">}</span><span class="k">else</span> <span class="k">if</span><span class="o">(</span><span class="n">n</span><span class="o">==</span><span class="mi">1</span> <span class="o">||</span> <span class="n">n</span> <span class="o">==</span> <span class="mi">0</span><span class="o">){</span>
+            <span class="k">return</span> <span class="mi">1</span><span class="o">;</span>
+        <span class="o">}</span><span class="k">else</span>  <span class="o">{</span>
+            <span class="k">return</span> <span class="n">n</span> <span class="o">*</span> <span class="n">factorial</span><span class="o">(</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="o">);</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+
+    <span class="cm">/**
+     * 理解递归&lt;br&gt;
+     * 简单打印变量，以体现递归还原现场（出栈）的过程
+     * @param n 参数
+     */</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">recursion_display</span><span class="o">(</span><span class="kt">int</span> <span class="n">n</span><span class="o">){</span>
+        <span class="kt">int</span> <span class="n">temp</span> <span class="o">=</span> <span class="n">n</span><span class="o">;</span>
+        <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"递进:"</span><span class="o">+</span><span class="n">n</span><span class="o">);</span>
+        <span class="k">if</span><span class="o">(</span><span class="n">n</span><span class="o">&gt;</span><span class="mi">0</span><span class="o">){</span>
+            <span class="n">recursion_display</span><span class="o">(--</span><span class="n">n</span><span class="o">);</span>
+        <span class="o">}</span>
+        <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"回归:"</span><span class="o">+</span><span class="n">temp</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="cm">/**
+     * 斐波那契数列计算(线性递归)
+     * @param n 参数
+     * @return 斐波那契数列第N项结果
+     * @throws Exception
+     */</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">int</span> <span class="nf">fib</span><span class="o">(</span><span class="kt">int</span> <span class="n">n</span><span class="o">)</span> <span class="kd">throws</span> <span class="nc">Exception</span><span class="o">{</span>
+        <span class="k">if</span><span class="o">(</span><span class="n">n</span><span class="o">&lt;</span><span class="mi">0</span><span class="o">){</span>
+            <span class="k">throw</span> <span class="k">new</span> <span class="nf">Exception</span><span class="o">(</span><span class="s">"参数不能为负数!"</span><span class="o">);</span>
+        <span class="o">}</span><span class="k">else</span> <span class="k">if</span><span class="o">(</span><span class="n">n</span><span class="o">==</span><span class="mi">0</span> <span class="o">||</span> <span class="n">n</span><span class="o">==</span><span class="mi">1</span><span class="o">){</span>
+            <span class="k">return</span> <span class="n">n</span><span class="o">;</span>
+        <span class="o">}</span><span class="k">else</span><span class="o">{</span>
+            <span class="k">return</span> <span class="nf">fib</span><span class="o">(</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="o">)+</span><span class="n">fib</span><span class="o">(</span><span class="n">n</span><span class="o">-</span><span class="mi">2</span><span class="o">);</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+
+    <span class="cm">/**
+     * 斐波那契数列计算(尾递归)-方法1
+     * @param a 第n项
+     * @param b 第n+1项
+     * @param n 第几项
+     * @return 第n项的值
+     */</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">int</span> <span class="nf">newFib</span><span class="o">(</span><span class="kt">int</span> <span class="n">a</span><span class="o">,</span><span class="kt">int</span> <span class="n">b</span><span class="o">,</span><span class="kt">int</span> <span class="n">n</span><span class="o">){</span>
+        <span class="k">if</span><span class="o">(</span><span class="n">n</span><span class="o">&gt;</span><span class="mi">2</span><span class="o">){</span>
+            <span class="k">return</span> <span class="nf">newFib</span><span class="o">(</span><span class="n">a</span><span class="o">+</span><span class="n">b</span><span class="o">,</span><span class="n">a</span><span class="o">,</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="o">);</span>
+        <span class="o">}</span>
+        <span class="k">return</span> <span class="n">a</span><span class="o">;</span>
+    <span class="o">}</span>
+    <span class="cm">/**
+     * 斐波那契数列计算(尾递归)-方法2
+     * @param a 第n项
+     * @param b 第n+1项
+     * @param n 第几项
+     * @return 第n项的值
+     */</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">int</span> <span class="nf">newFib_fmt2</span><span class="o">(</span><span class="kt">int</span> <span class="n">a</span><span class="o">,</span><span class="kt">int</span> <span class="n">b</span><span class="o">,</span><span class="kt">int</span> <span class="n">n</span><span class="o">){</span>
+        <span class="k">if</span><span class="o">(</span><span class="n">n</span><span class="o">&lt;=</span><span class="mi">2</span><span class="o">){</span>
+            <span class="k">return</span> <span class="n">a</span><span class="o">;</span>
+        <span class="o">}</span>
+        <span class="k">return</span> <span class="nf">newFib_fmt2</span><span class="o">(</span><span class="n">a</span><span class="o">+</span><span class="n">b</span><span class="o">,</span><span class="n">a</span><span class="o">,</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="cm">/**
+     * 斐波那契数列计算(尾递归)-方法3
+     * @param n 第几项
+     * @param ret1 第n项
+     * @param ret2 第n+1项
+     * @return 第n项的值
+     */</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">int</span> <span class="nf">newFib_fmt3</span><span class="o">(</span><span class="kt">int</span> <span class="n">n</span><span class="o">,</span> <span class="kt">int</span> <span class="n">ret1</span><span class="o">,</span> <span class="kt">int</span> <span class="n">ret2</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">if</span><span class="o">(</span><span class="n">n</span> <span class="o">==</span> <span class="mi">1</span><span class="o">)</span> <span class="o">{</span>
+            <span class="k">return</span> <span class="n">ret1</span><span class="o">;</span>
+        <span class="o">}</span>
+        <span class="k">return</span> <span class="nf">newFib_fmt3</span><span class="o">(</span><span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="o">,</span> <span class="n">ret2</span><span class="o">,</span> <span class="n">ret1</span> <span class="o">+</span> <span class="n">ret2</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="cm">/**
+     * 斐波那契数列计算(循环)
+     * @param n 第几项
+     * @return 第n项的值
+     * @throws Exception
+     */</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">int</span> <span class="nf">newFib_repeat</span><span class="o">(</span><span class="kt">int</span> <span class="n">n</span><span class="o">)</span> <span class="kd">throws</span> <span class="nc">Exception</span> <span class="o">{</span>
+        <span class="k">if</span><span class="o">(</span><span class="n">n</span><span class="o">&lt;</span><span class="mi">1</span><span class="o">)</span> <span class="o">{</span>
+            <span class="k">throw</span> <span class="k">new</span> <span class="nf">Exception</span><span class="o">(</span><span class="s">"参数必须为正整数!"</span><span class="o">);</span>
+        <span class="o">}</span><span class="k">if</span><span class="o">(</span><span class="n">n</span><span class="o">&lt;=</span><span class="mi">2</span><span class="o">){</span><span class="c1">//第1项和第2项都为1</span>
+            <span class="k">return</span> <span class="mi">1</span><span class="o">;</span>
+        <span class="o">}</span><span class="k">else</span><span class="o">{</span>
+            <span class="kt">int</span> <span class="n">a</span> <span class="o">=</span><span class="mi">1</span><span class="o">;</span>
+            <span class="kt">int</span> <span class="n">b</span> <span class="o">=</span><span class="mi">1</span><span class="o">;</span>
+            <span class="kt">int</span> <span class="n">sum</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
+            <span class="k">for</span><span class="o">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="o">;</span><span class="n">i</span><span class="o">&lt;</span><span class="n">n</span><span class="o">-</span><span class="mi">2</span><span class="o">;</span><span class="n">i</span><span class="o">++){</span>
+                <span class="n">sum</span> <span class="o">=</span> <span class="n">a</span><span class="o">+</span><span class="n">b</span><span class="o">;</span>
+                <span class="n">a</span> <span class="o">=</span> <span class="n">b</span><span class="o">;</span>
+                <span class="n">b</span> <span class="o">=</span> <span class="n">sum</span><span class="o">;</span>
+            <span class="o">}</span>
+            <span class="k">return</span> <span class="n">sum</span><span class="o">;</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+
+<span class="o">}</span>
+
+
+</code></pre></div></div>
+:ET

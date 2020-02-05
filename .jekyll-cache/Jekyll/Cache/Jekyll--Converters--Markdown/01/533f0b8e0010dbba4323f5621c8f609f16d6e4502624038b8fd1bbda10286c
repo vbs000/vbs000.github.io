@@ -1,0 +1,176 @@
+I"pG<h1 id="test-palindrome-linked-list"><a href="https://leetcode.com/problems/palindrome-linked-list">Test Palindrome Linked List</a></h1>
+
+<h2 id="描述">描述</h2>
+
+<p>测试编写单链表类。</p>
+
+<p><strong>疑问:</strong></p>
+
+<p>单链表头节点设置为空，并且不保存数据，是否浪费?</p>
+
+<h2 id="思路">思路</h2>
+
+<p>找到链表中点，在中点往两侧遍历，看两侧走过的路径是否完全一致。</p>
+
+<h2 id="完整代码src">[完整代码][src]</h2>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">package</span> <span class="n">org</span><span class="o">.</span><span class="na">vbs000</span><span class="o">.</span><span class="na">utils</span><span class="o">;</span>
+
+<span class="cm">/**
+ * 单链表实现
+ * @param &lt;T&gt; 数据类型
+ */</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">LinkedList</span><span class="o">&lt;</span><span class="no">T</span><span class="o">&gt;</span> <span class="o">{</span>
+    <span class="cm">/**
+     * 节点-定义为内部类
+     * @param &lt;T&gt; 数据类型
+     */</span>
+    <span class="kd">private</span> <span class="kd">class</span> <span class="nc">Node</span><span class="o">&lt;</span><span class="no">T</span><span class="o">&gt;{</span>
+        <span class="nc">Node</span> <span class="n">next</span><span class="o">;</span>
+        <span class="no">T</span> <span class="n">data</span><span class="o">;</span>
+        <span class="nc">Node</span><span class="o">(</span><span class="no">T</span> <span class="n">data</span><span class="o">){</span>
+            <span class="k">this</span><span class="o">.</span><span class="na">data</span> <span class="o">=</span> <span class="n">data</span><span class="o">;</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+
+    <span class="cm">/**
+     * 定义头结点
+     */</span>
+    <span class="kd">public</span> <span class="nc">Node</span> <span class="n">head</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Node</span><span class="o">(</span><span class="kc">null</span><span class="o">);</span>
+    <span class="cm">/**
+     * 定义链表大小
+     */</span>
+    <span class="kd">public</span> <span class="kt">int</span> <span class="n">size</span><span class="o">;</span>
+
+    <span class="cm">/**
+     * 添加一个元素
+     * @param data 数据
+     */</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">add</span><span class="o">(</span><span class="no">T</span> <span class="n">data</span><span class="o">){</span>
+        <span class="nc">Node</span> <span class="n">temp</span> <span class="o">=</span> <span class="n">head</span><span class="o">;</span>
+        <span class="k">while</span><span class="o">(</span><span class="n">temp</span><span class="o">.</span><span class="na">next</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">){</span><span class="c1">//遍历至链表末尾</span>
+            <span class="n">temp</span> <span class="o">=</span> <span class="n">temp</span><span class="o">.</span><span class="na">next</span><span class="o">;</span>
+        <span class="o">}</span>
+        <span class="n">temp</span><span class="o">.</span><span class="na">next</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Node</span><span class="o">(</span><span class="n">data</span><span class="o">);</span><span class="c1">//将链表末尾指向新建节点</span>
+        <span class="n">size</span><span class="o">++;</span>
+    <span class="o">}</span>
+
+    <span class="cm">/**
+     * 在指定位置插入数据
+     * @param idx 坐标
+     * @param data 数据
+     */</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">insert</span><span class="o">(</span><span class="kt">int</span> <span class="n">idx</span><span class="o">,</span><span class="no">T</span> <span class="n">data</span><span class="o">){</span>
+        <span class="k">if</span><span class="o">(</span><span class="n">idx</span><span class="o">&lt;</span><span class="mi">0</span> <span class="o">||</span> <span class="n">idx</span><span class="o">&gt;</span><span class="n">size</span><span class="o">){</span><span class="c1">//如果超出范围</span>
+            <span class="k">throw</span> <span class="k">new</span> <span class="nf">ArrayIndexOutOfBoundsException</span><span class="o">(</span><span class="s">"插入的位置超出范围!(实际范围0~"</span><span class="o">+</span><span class="n">size</span><span class="o">+</span><span class="s">"，输入位置:"</span><span class="o">+</span><span class="n">idx</span><span class="o">+</span><span class="s">")"</span><span class="o">);</span>
+        <span class="o">}</span><span class="k">else</span><span class="o">{</span>
+            <span class="nc">Node</span> <span class="n">pointerNode</span> <span class="o">=</span> <span class="n">head</span><span class="o">;</span>
+            <span class="kt">int</span> <span class="n">count</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="o">;</span>
+            <span class="k">while</span><span class="o">(</span><span class="n">pointerNode</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">){</span>
+                <span class="k">if</span><span class="o">((</span><span class="n">idx</span><span class="o">-</span><span class="mi">1</span><span class="o">)</span> <span class="o">==</span> <span class="n">count</span><span class="o">){</span>
+                    <span class="nc">Node</span> <span class="n">insertNode</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Node</span><span class="o">(</span><span class="n">data</span><span class="o">);</span>
+                    <span class="nc">Node</span> <span class="n">nextNode</span> <span class="o">=</span> <span class="n">pointerNode</span><span class="o">.</span><span class="na">next</span><span class="o">;</span>
+                    <span class="n">pointerNode</span><span class="o">.</span><span class="na">next</span> <span class="o">=</span> <span class="n">insertNode</span><span class="o">;</span><span class="c1">//将前面的节点指向插入的节点</span>
+                    <span class="n">insertNode</span><span class="o">.</span><span class="na">next</span> <span class="o">=</span> <span class="n">nextNode</span><span class="o">;</span><span class="c1">//将新插入的节点的下一个指向原来节点的后一个节点</span>
+                    <span class="n">size</span><span class="o">++;</span><span class="c1">//整体长度+1</span>
+                <span class="o">}</span>
+                <span class="n">pointerNode</span> <span class="o">=</span> <span class="n">pointerNode</span><span class="o">.</span><span class="na">next</span><span class="o">;</span><span class="c1">//往后遍历</span>
+                <span class="n">count</span><span class="o">++;</span>
+            <span class="o">}</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+
+    <span class="cm">/**
+     * 删除指定坐标的节点
+     * @param idx 坐标
+     */</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">delete</span><span class="o">(</span><span class="kt">int</span> <span class="n">idx</span><span class="o">){</span>
+        <span class="k">if</span><span class="o">(</span><span class="n">idx</span><span class="o">&lt;</span><span class="mi">0</span> <span class="o">||</span> <span class="n">idx</span><span class="o">&gt;</span><span class="n">size</span><span class="o">){</span><span class="c1">//如果超出范围</span>
+            <span class="k">throw</span> <span class="k">new</span> <span class="nf">ArrayIndexOutOfBoundsException</span><span class="o">(</span><span class="s">"删除的位置超出范围!(实际范围0~"</span><span class="o">+</span><span class="n">size</span><span class="o">+</span><span class="s">"，输入位置:"</span><span class="o">+</span><span class="n">idx</span><span class="o">+</span><span class="s">")"</span><span class="o">);</span>
+        <span class="o">}</span><span class="k">else</span><span class="o">{</span>
+            <span class="nc">Node</span> <span class="n">pointerNode</span> <span class="o">=</span> <span class="n">head</span><span class="o">;</span>
+            <span class="kt">int</span> <span class="n">count</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="o">;</span>
+            <span class="k">while</span><span class="o">(</span><span class="n">pointerNode</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">){</span>
+                <span class="k">if</span><span class="o">((</span><span class="n">idx</span><span class="o">-</span><span class="mi">1</span><span class="o">)</span> <span class="o">==</span> <span class="n">count</span><span class="o">){</span>
+                    <span class="n">pointerNode</span><span class="o">.</span><span class="na">next</span> <span class="o">=</span> <span class="n">pointerNode</span><span class="o">.</span><span class="na">next</span><span class="o">.</span><span class="na">next</span><span class="o">;</span><span class="c1">//将前面的节点指向后面的后面的节点</span>
+                    <span class="n">size</span><span class="o">--;</span>
+                <span class="o">}</span>
+                <span class="n">count</span><span class="o">++;</span>
+                <span class="n">pointerNode</span> <span class="o">=</span> <span class="n">pointerNode</span><span class="o">.</span><span class="na">next</span><span class="o">;</span>
+            <span class="o">}</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+
+    <span class="cm">/**
+     * 获得相应坐标下的数据
+     * @param idx 坐标
+     * @return
+     */</span>
+    <span class="kd">public</span> <span class="no">T</span> <span class="nf">get</span><span class="o">(</span><span class="kt">int</span> <span class="n">idx</span><span class="o">){</span>
+        <span class="k">if</span><span class="o">(</span><span class="n">idx</span><span class="o">&lt;</span><span class="mi">0</span> <span class="o">||</span> <span class="n">idx</span><span class="o">&gt;</span><span class="n">size</span><span class="o">){</span><span class="c1">//如果超出范围</span>
+            <span class="k">throw</span> <span class="k">new</span> <span class="nf">ArrayIndexOutOfBoundsException</span><span class="o">(</span><span class="s">"获取的位置超出范围!(实际范围0~"</span><span class="o">+</span><span class="n">size</span><span class="o">+</span><span class="s">"，输入位置:"</span><span class="o">+</span><span class="n">idx</span><span class="o">+</span><span class="s">")"</span><span class="o">);</span>
+        <span class="o">}</span><span class="k">else</span><span class="o">{</span>
+            <span class="nc">Node</span> <span class="n">pointerNode</span> <span class="o">=</span> <span class="n">head</span><span class="o">;</span>
+            <span class="kt">int</span> <span class="n">count</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="o">;</span>
+            <span class="k">while</span><span class="o">(</span><span class="n">pointerNode</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">){</span>
+                <span class="k">if</span><span class="o">(</span><span class="n">count</span> <span class="o">==</span> <span class="n">idx</span><span class="o">){</span>
+                    <span class="k">return</span> <span class="o">(</span><span class="no">T</span><span class="o">)</span> <span class="n">pointerNode</span><span class="o">.</span><span class="na">data</span><span class="o">;</span>
+                <span class="o">}</span>
+                <span class="n">pointerNode</span> <span class="o">=</span> <span class="n">pointerNode</span><span class="o">.</span><span class="na">next</span><span class="o">;</span>
+                <span class="n">count</span><span class="o">++;</span>
+            <span class="o">}</span>
+            <span class="k">return</span> <span class="kc">null</span><span class="o">;</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">printAll</span><span class="o">(){</span>
+        <span class="nc">Node</span> <span class="n">pointerNode</span> <span class="o">=</span> <span class="n">head</span><span class="o">;</span>
+        <span class="kt">int</span> <span class="n">count</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
+        <span class="k">while</span><span class="o">(</span><span class="n">pointerNode</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">){</span>
+            <span class="k">if</span><span class="o">(</span><span class="n">pointerNode</span> <span class="o">!=</span> <span class="n">head</span><span class="o">){</span><span class="c1">//不是头结点</span>
+                <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">((</span><span class="s">"Index["</span><span class="o">+</span><span class="n">count</span><span class="o">+</span><span class="s">"]"</span><span class="o">)+</span><span class="s">":"</span><span class="o">+(</span><span class="no">T</span><span class="o">)</span> <span class="n">pointerNode</span><span class="o">.</span><span class="na">data</span><span class="o">);</span>
+                <span class="n">count</span><span class="o">++;</span>
+            <span class="o">}</span>
+            <span class="n">pointerNode</span> <span class="o">=</span> <span class="n">pointerNode</span><span class="o">.</span><span class="na">next</span><span class="o">;</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="nf">LinkedList</span><span class="o">(){</span>
+    <span class="o">}</span>
+
+
+    <span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">isPalindrome</span><span class="o">(</span><span class="nc">Node</span> <span class="n">head</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">head</span> <span class="o">==</span> <span class="kc">null</span> <span class="o">||</span> <span class="n">head</span><span class="o">.</span><span class="na">next</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+            <span class="k">return</span> <span class="kc">true</span><span class="o">;</span>
+        <span class="o">}</span>
+
+        <span class="nc">Node</span> <span class="n">prev</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
+        <span class="nc">Node</span> <span class="n">slow</span> <span class="o">=</span> <span class="n">head</span><span class="o">;</span>
+        <span class="nc">Node</span> <span class="n">fast</span> <span class="o">=</span> <span class="n">head</span><span class="o">;</span>
+
+        <span class="k">while</span> <span class="o">(</span><span class="n">fast</span> <span class="o">!=</span> <span class="kc">null</span> <span class="o">&amp;&amp;</span> <span class="n">fast</span><span class="o">.</span><span class="na">next</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+            <span class="n">fast</span> <span class="o">=</span> <span class="n">fast</span><span class="o">.</span><span class="na">next</span><span class="o">.</span><span class="na">next</span><span class="o">;</span>
+            <span class="nc">Node</span> <span class="n">next</span> <span class="o">=</span> <span class="n">slow</span><span class="o">.</span><span class="na">next</span><span class="o">;</span>
+            <span class="n">slow</span><span class="o">.</span><span class="na">next</span> <span class="o">=</span> <span class="n">prev</span><span class="o">;</span>
+            <span class="n">prev</span> <span class="o">=</span> <span class="n">slow</span><span class="o">;</span>
+            <span class="n">slow</span> <span class="o">=</span> <span class="n">next</span><span class="o">;</span>
+        <span class="o">}</span>
+
+        <span class="k">if</span> <span class="o">(</span><span class="n">fast</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+            <span class="n">slow</span> <span class="o">=</span> <span class="n">slow</span><span class="o">.</span><span class="na">next</span><span class="o">;</span>
+        <span class="o">}</span>
+
+        <span class="k">while</span> <span class="o">(</span><span class="n">slow</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+            <span class="k">if</span> <span class="o">(</span><span class="n">slow</span><span class="o">.</span><span class="na">data</span> <span class="o">!=</span> <span class="n">prev</span><span class="o">.</span><span class="na">data</span><span class="o">)</span> <span class="o">{</span>
+                <span class="k">return</span> <span class="kc">false</span><span class="o">;</span>
+            <span class="o">}</span>
+            <span class="n">slow</span> <span class="o">=</span> <span class="n">slow</span><span class="o">.</span><span class="na">next</span><span class="o">;</span>
+            <span class="n">prev</span> <span class="o">=</span> <span class="n">prev</span><span class="o">.</span><span class="na">next</span><span class="o">;</span>
+        <span class="o">}</span>
+
+        <span class="k">return</span> <span class="kc">true</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+
+</code></pre></div></div>
+
+:ET

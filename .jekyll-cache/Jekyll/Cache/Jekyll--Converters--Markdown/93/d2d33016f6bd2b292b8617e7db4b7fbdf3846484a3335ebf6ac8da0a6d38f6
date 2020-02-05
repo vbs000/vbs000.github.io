@@ -1,0 +1,23 @@
+I"�<h2 id="描述">描述</h2>
+
+<p>使用 GITHUB PAGES 搭建自己的静态页面。</p>
+
+<h2 id="所有的开始">所有的开始</h2>
+
+<p>1.GitHub映射了以这样（${username}.github.io）方式命名的仓库（Repository）。<br />
+2.而且，在该仓库的根目录默认以index.html作为首页。</p>
+
+<h2 id="什么是jekyll">什么是jekyll</h2>
+<p>快速生成静态网页的工具。</p>
+
+<p>1.主要结构</p>
+<ul>
+  <li>文件夹_layouts：用于存放模板的文件夹</li>
+  <li>文件夹_posts：用于存放博客文章的文件夹，里面是markdown格式的文章</li>
+  <li>文件夹css：存放博客所用css的文件夹</li>
+  <li>_coinfig.yml：jekyll的配置文件，里面可以定义相当多的配置参数，具体配置参数可以参照其官网</li>
+  <li>index.html：项目的首页</li>
+</ul>
+
+<p>2.以markdown格式作为文章规范，可以让作者摆脱排版的困扰，专心写作。</p>
+:ET
